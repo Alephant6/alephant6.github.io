@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Qiang — CS PhD @ University at Buffalo</title>
+<meta name="description" content="Peter (Shengzhou) Qiang — CS PhD student at University at Buffalo working on distributed transactions, consistency protocols, and databases.">
+<style>
+  :root {
+    --bg: #fdfdfc; --fg: #1c1e21; --muted: #5a6472; --accent: #1a4d8f;
+    --card: #f4f5f7; --border: #e3e6ea; --tag: #e8eef7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15181c; --fg: #e6e8eb; --muted: #9aa5b1; --accent: #7fb0e8;
+      --card: #1e2329; --border: #2c333b; --tag: #24303f;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    padding: 3rem 1.25rem 4rem;
+  }
+  main { max-width: 46rem; margin: 0 auto; }
+  h1 { font-size: 2rem; letter-spacing: -0.02em; }
+  .tagline { color: var(--muted); margin-top: .35rem; }
+  .links { margin-top: .8rem; display: flex; flex-wrap: wrap; gap: .5rem 1.1rem; font-size: .95rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  section { margin-top: 2.6rem; }
+  h2 {
+    font-size: 1.05rem; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: .4rem;
+  }
+  .intro { margin-top: 1rem; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.15rem; margin-top: 1rem;
+  }
+  .card h3 { font-size: 1.02rem; }
+  .card .meta { color: var(--muted); font-size: .85rem; margin-top: .15rem; }
+  .card p { margin-top: .55rem; font-size: .95rem; }
+  .tags { margin-top: .65rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tags span {
+    background: var(--tag); color: var(--accent); border-radius: 999px;
+    font-size: .74rem; padding: .15rem .6rem; white-space: nowrap;
+  }
+  .pub { margin-top: .9rem; font-size: .93rem; }
+  .pub .venue { color: var(--muted); font-style: italic; }
+  footer { margin-top: 3.5rem; color: var(--muted); font-size: .85rem; text-align: center; }
+  @media (max-width: 480px) { h1 { font-size: 1.6rem; } body { padding-top: 2rem; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Peter (Shengzhou) Qiang</h1>
+    <p class="tagline">CS PhD student · University at Buffalo · distributed transactions &amp; databases</p>
+    <nav class="links">
+      <a href="mailto:sqiang@buffalo.edu">sqiang@buffalo.edu</a>
+      <a href="https://github.com/Alephant6">GitHub</a>
+      <a href="cv.pdf">CV (PDF)</a>
+    </nav>
+  </header>
+
+  <section>
+    <h2>About</h2>
+    <p class="intro">
+      I am a PhD student in Computer Science at the <strong>University at Buffalo, SUNY</strong>,
+      advised by <a href="https://cse.buffalo.edu/~haonanlu/">Prof. Haonan Lu</a>.
+      I work on <strong>distributed transactions and consistency protocols</strong> — building and
+      rigorously evaluating distributed datastores. I like turning protocol theory into working
+      systems: my code spans CockroachDB internals, TAPIR, Jepsen, and several
+      self-built large-scale testbeds. I am seeking <strong>Summer 2027 software-engineering /
+      research internships</strong> in database internals and infrastructure.
+    </p>
+  </section>
+
+  <section>
+    <h2>Research</h2>
+
+    <div class="card">
+      <h3>SONIC — rethinking replication-critical read-only transactions</h3>
+      <p class="meta">2025 – present · lead author · under submission</p>
+      <p>
+        Shows that "replication-critical" read-only transaction designs are unnecessary:
+        formalizes the SONIC and Remote-Read theorems and demonstrates them with two systems —
+        <strong>Starry</strong> (a deep modification of UW's TAPIR, 300+ commits of C++) and an
+        extended COPS-SNOW with chain replication — validated by self-built Jepsen falsifier suites.
+      </p>
+      <div class="tags"><span>C++</span><span>TAPIR</span><span>Jepsen / Clojure</span><span>CloudLab</span><span>consistency</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Juicer — cutting tail latency of strict serializability without code changes</h3>
+      <p class="meta">2025 – present · under submission</p>
+      <p>
+        A transparent, proactive message-ordering layer inside gRPC interceptors that reorders
+        transaction messages by timestamp before they reach data shards — cutting
+        <strong>P99 latency by up to 75%</strong> and abort rates by up to 85% for strictly
+        serializable concurrency control, with zero changes to database code.
+      </p>
+      <div class="tags"><span>Go</span><span>gRPC</span><span>2PL / OCC / MVTO / NCC</span><span>tail latency</span></div>
+    </div>
+
+    <div class="card">
+      <h3>EaaS — Evaluation-as-a-Service for distributed storage systems</h3>
+      <p class="meta">2023 – 2025 · top code contributor (~47% of 1,800+ commits)</p>
+      <p>
+        An end-to-end framework that makes evaluating distributed storage systems easy, correct,
+        and reproducible. I built its unified workload engine (YCSB, transactional YCSB-T,
+        interactive TPC-C) and multi-language adapters for CockroachDB, Cassandra, and
+        EPaxos-family protocols; our re-evaluation refuted EPaxos's published 3× throughput claim.
+      </p>
+      <div class="tags"><span>C++</span><span>gRPC</span><span>Raft</span><span>TPC-C / YCSB</span><span>AWS</span></div>
+    </div>
+
+    <div class="card">
+      <h3>PRC — developer-intended consistency testing for distributed datastores</h3>
+      <p class="meta">2025 – present · under submission</p>
+      <p>
+        Directed implementation testing that turns community-known correctness pitfalls
+        (e.g., timestamp inversion) into targeted tests — complementing random-exploration
+        tools like Jepsen.
+      </p>
+      <div class="tags"><span>P framework</span><span>formal methods</span><span>testing</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Publications</h2>
+    <p class="pub">
+      <strong>S.-Z. Qiang</strong>, et al.
+      "Instantaneous cross-correlation function type of WD based LFM signals analysis via output SNR inequality modeling."
+      <span class="venue">EURASIP Journal on Advances in Signal Processing, 2021.</span> (first author)
+    </p>
+    <p class="pub">
+      Six further co-authored papers in signal processing
+      (<span class="venue">Optik ×3, Physics Letters A, Mathematical Problems in Engineering, Chinese Journal of Electronics</span>), 2021–2022.
+    </p>
+  </section>
+
+  <footer>© 2026 Peter Qiang · Built with plain HTML — no trackers, no cookies.</footer>
+</main>
+</body>
+</html>
