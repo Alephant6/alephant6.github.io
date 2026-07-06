@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shengzhou Qiang — CS PhD @ University at Buffalo</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Shengzhou Qiang — CS PhD student at University at Buffalo working on distributed transactions, consistency protocols, and databases.">
 <style>
   :root {
@@ -62,6 +63,7 @@
     color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2));
     box-shadow: var(--shadow); margin-bottom: 1.4rem;
   }
+  .mark { display:block; margin-bottom: 1.3rem; }
   .hero h1 { font-size: clamp(2rem, 6vw, 2.9rem); letter-spacing: -.03em; line-height: 1.05; }
   .hero .role { color: var(--muted); margin-top: .5rem; font-size: 1.05rem; }
   .hero .pitch { margin-top: 1.4rem; max-width: 40rem; font-size: 1.05rem; }
@@ -155,7 +157,15 @@
 
 <main>
   <header class="hero">
-    <div class="avatar">SQ</div>
+    <svg class="mark" viewBox="0 0 118 66" width="104" height="58" role="img" aria-label="SQ logo">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#215d9c"/><stop offset="1" stop-color="#2b8a7a"/>
+      </linearGradient></defs>
+      <path d="M 38,11 A 11,11 0 1 0 38,33 A 11,11 0 1 1 38,55" fill="none" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="76" cy="33" r="20" fill="none" stroke="url(#lg)" stroke-width="9"/>
+      <line x1="86" y1="45" x2="96" y2="55" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="102" cy="60" r="5.5" fill="#2b8a7a"/>
+    </svg>
     <h1>Shengzhou Qiang</h1>
     <p class="role">CS PhD student · University at Buffalo · distributed transactions &amp; databases</p>
     <p class="pitch">
