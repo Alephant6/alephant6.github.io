@@ -3,299 +3,565 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shengzhou Qiang — CS PhD @ University at Buffalo</title>
+<title>Shengzhou Qiang | Distributed systems &amp; databases</title>
+<meta name="description" content="Shengzhou Qiang is a Ph.D. candidate at the University at Buffalo working on transactional distributed databases: concurrency control, consistency protocols, and fault-injection testing. Open to Summer 2027 internships.">
+<meta name="author" content="Shengzhou Qiang">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1114" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://sqiang.us/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="description" content="Shengzhou Qiang — CS PhD student at University at Buffalo working on distributed transactions, consistency protocols, and databases.">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Shengzhou Qiang">
+<meta property="og:title" content="Shengzhou Qiang | Distributed systems &amp; databases">
+<meta property="og:description" content="Ph.D. candidate at the University at Buffalo. Transactional distributed databases, consistency protocols, and fault-injection testing. Open to Summer 2027 internships.">
+<meta property="og:url" content="https://sqiang.us/">
+<meta property="og:image" content="https://sqiang.us/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Shengzhou Qiang, Ph.D. candidate at the University at Buffalo, distributed systems and databases">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Shengzhou Qiang",
+  "url": "https://sqiang.us/",
+  "image": "https://sqiang.us/og.png",
+  "jobTitle": "Ph.D. candidate in Computer Science",
+  "description": "Ph.D. candidate working on transactional distributed databases, consistency protocols, and fault-injection testing.",
+  "email": "mailto:sqiang@buffalo.edu",
+  "affiliation": { "@type": "CollegeOrUniversity", "name": "University at Buffalo, SUNY", "url": "https://www.buffalo.edu/" },
+  "alumniOf": { "@type": "CollegeOrUniversity", "name": "Nanjing University of Information Science & Technology" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Buffalo", "addressRegion": "NY", "addressCountry": "US" },
+  "knowsAbout": ["Distributed systems", "Databases", "Distributed transactions", "Concurrency control", "Consistency protocols", "Jepsen", "Fault injection", "Storage systems"],
+  "sameAs": ["https://github.com/Alephant6", "https://www.linkedin.com/in/sqiang/"]
+}
+</script>
+
 <style>
   :root {
-    --bg: #fbfbfa; --surface: #ffffff; --fg: #191c20; --muted: #616872;
-    --accent: #215d9c; --accent-2: #2b8a7a; --border: #e6e8ec; --tag-bg: #eef2f7;
-    --shadow: 0 1px 2px rgba(20,30,50,.04), 0 8px 24px rgba(20,30,50,.06);
-    --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --bg: #fbfbf9; --surface: #ffffff; --fg: #15181c; --fg-2: #3b424b; --muted: #5c646f;
+    --line: #e3e5e9; --accent: #215d9c; --accent-2: #20786a; --tint: #eef3f9;
+    --bar: rgba(251, 251, 249, .78);
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --rail: 11rem; --gap: 2.75rem;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1216; --surface: #161a20; --fg: #e8eaee; --muted: #949dab;
-      --accent: #6ea6e6; --accent-2: #5cc4ac; --border: #262c35;
-      --tag-bg: #1d232c; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+      --bg: #0e1114; --surface: #161b21; --fg: #eceef1; --fg-2: #c2c8d0; --muted: #97a0ac;
+      --line: #252b33; --accent: #7fb3ee; --accent-2: #62c8b1; --tint: #172130;
+      --bar: rgba(14, 17, 20, .76);
     }
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     background: var(--bg); color: var(--fg);
-    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
+    font: 100%/1.65 var(--sans);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
   a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  .nw { white-space: nowrap; }
   ::selection { background: var(--accent); color: #fff; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  [id] { scroll-margin-top: 5.5rem; }
+
+  .wrap { max-width: 64rem; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 3rem); }
+
+  .skip {
+    position: absolute; left: 1rem; top: -4rem; z-index: 50;
+    background: var(--fg); color: var(--bg); padding: .6rem 1rem; border-radius: 8px; font-weight: 600;
+  }
+  .skip:focus { top: 1rem; }
+
+  /* Inline text links */
+  .prose a, .text-link {
+    color: var(--accent); text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    text-decoration-thickness: 1px; text-underline-offset: .2em;
+    transition: text-decoration-color .15s;
+  }
+  .prose a:hover, .text-link:hover { text-decoration-color: currentColor; }
 
   /* Top bar */
   .topbar {
     position: sticky; top: 0; z-index: 20;
-    backdrop-filter: saturate(1.4) blur(10px);
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    border-bottom: 1px solid var(--border);
+    background: var(--bar);
+    -webkit-backdrop-filter: saturate(1.6) blur(14px); backdrop-filter: saturate(1.6) blur(14px);
+    border-bottom: 1px solid var(--line);
   }
-  .topbar-inner {
-    max-width: 52rem; margin: 0 auto; padding: .75rem 1.5rem;
-    display: flex; align-items: center; justify-content: space-between;
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 3.5rem; }
+  .brand { font-weight: 650; letter-spacing: -.01em; white-space: nowrap; }
+  .topnav { display: flex; align-items: center; gap: .25rem; font-size: .9rem; }
+  .topnav a { color: var(--muted); padding: .35rem .65rem; border-radius: 7px; transition: color .15s, background-color .15s; white-space: nowrap; }
+  .topnav a:hover, .topnav a[aria-current="true"] { color: var(--fg); }
+  .topnav a[aria-current="true"] { background: color-mix(in srgb, var(--fg) 7%, transparent); }
+  .topnav a.cta {
+    margin-left: .5rem; color: var(--accent); font-weight: 600;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
   }
-  .brand { font-weight: 700; letter-spacing: -.01em; }
-  .topnav { display: flex; gap: 1.3rem; font-family: var(--mono); font-size: .78rem; }
-  .topnav a { color: var(--muted); transition: color .15s; }
-  .topnav a:hover { color: var(--accent); }
-  @media (max-width: 560px) { .topnav { display: none; } }
+  .topnav a.cta:hover { background: var(--tint); color: var(--accent); }
+  @media (max-width: 760px) {
+    .topbar { position: static; }
+    .topbar .wrap { flex-wrap: wrap; row-gap: 0; padding-block: .7rem .5rem; }
+    .topnav { order: 3; width: 100%; margin-inline: -.65rem; margin-top: .3rem; overflow-x: auto; scrollbar-width: none; }
+    .topnav::-webkit-scrollbar { display: none; }
+    .topnav a.cta { display: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .topbar { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
 
-  main { max-width: 52rem; margin: 0 auto; padding: 0 1.5rem 5rem; }
+  /* Rail layout: a narrow label column and a content column */
+  .rail { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); column-gap: var(--gap); }
+  @media (max-width: 760px) { .rail { grid-template-columns: minmax(0, 1fr); } }
 
   /* Hero */
-  .hero { position: relative; padding: 4.5rem 0 3rem; }
-  .hero::before {
-    content: ""; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-    width: 620px; height: 320px; max-width: 120%;
-    background: radial-gradient(60% 60% at 50% 40%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
-    filter: blur(20px); opacity: .5; z-index: -1; pointer-events: none;
+  .hero { padding-block: clamp(3rem, 8vw, 5.5rem) clamp(2.5rem, 6vw, 4rem); }
+  .mark { display: block; width: 92px; height: auto; margin-top: .3rem; }
+  @media (max-width: 760px) { .mark { width: 76px; margin: 0 0 1.5rem; } }
+  @media (prefers-color-scheme: dark) {
+    .mark .m1 { stop-color: #5d9fe6; } .mark .m2 { stop-color: #4fc3aa; } .mark .m3 { fill: #4fc3aa; }
   }
-  .avatar {
-    width: 60px; height: 60px; border-radius: 50%;
-    display: grid; place-items: center; font-weight: 700; font-size: 1.25rem; letter-spacing: -.02em;
-    color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    box-shadow: var(--shadow); margin-bottom: 1.4rem;
+  .hero h1 { font-size: clamp(2.35rem, 6.2vw, 3.4rem); font-weight: 700; letter-spacing: -.032em; line-height: 1.04; }
+  .hero .role { margin-top: .7rem; color: var(--muted); font-size: 1.06rem; }
+  .hero .lede {
+    margin-top: 1.6rem; max-width: 40rem;
+    font-size: clamp(1.2rem, 2.4vw, 1.42rem); line-height: 1.42; letter-spacing: -.014em; font-weight: 500;
+    text-wrap: pretty;
   }
-  .mark { display:block; margin-bottom: 1.3rem; }
-  .hero h1 { font-size: clamp(2rem, 6vw, 2.9rem); letter-spacing: -.03em; line-height: 1.05; }
-  .hero .role { color: var(--muted); margin-top: .5rem; font-size: 1.05rem; }
-  .hero .pitch { margin-top: 1.4rem; max-width: 40rem; font-size: 1.05rem; }
-  .hero .pitch strong { font-weight: 650; }
-  .avail {
-    display: inline-flex; align-items: center; gap: .5rem; margin-top: 1.6rem;
-    font-family: var(--mono); font-size: .78rem; color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-    padding: .4rem .8rem; border-radius: 999px;
-  }
-  .avail .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-2) 60%, transparent); animation: pulse 2.4s infinite; }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent-2) 50%,transparent);} 70%{box-shadow:0 0 0 7px transparent;} 100%{box-shadow:0 0 0 0 transparent;} }
+  .hero .support { margin-top: 1rem; max-width: 40rem; color: var(--fg-2); font-size: 1.05rem; text-wrap: pretty; }
 
-  .links { margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: .6rem; }
-  .links a {
-    display: inline-flex; align-items: center; gap: .45rem;
-    font-size: .9rem; font-weight: 550;
-    padding: .5rem .9rem; border-radius: 9px;
-    border: 1px solid var(--border); background: var(--surface);
-    transition: transform .15s, border-color .15s, color .15s;
+  .now { margin-top: 2rem; max-width: 40rem; border-top: 1px solid var(--line); }
+  .now > div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; padding-block: .7rem; border-bottom: 1px solid var(--line); }
+  .now dt { font-family: var(--mono); font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding-top: .22rem; }
+  .now dd { font-size: .98rem; }
+  .now dd strong { font-weight: 650; }
+  .now .sub { display: block; color: var(--muted); font-size: .92rem; }
+  .dot {
+    display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; margin-right: .5rem; vertical-align: .08em;
+    background: var(--accent-2); animation: pulse 2.6s ease-out infinite;
   }
-  .links a:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--accent); }
-  .links svg { width: 15px; height: 15px; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-2) 55%, transparent); }
+    70%, 100% { box-shadow: 0 0 0 .45rem transparent; }
+  }
+  @media (max-width: 480px) { .now > div { grid-template-columns: minmax(0, 1fr); gap: .1rem; } .now dt { padding-top: 0; } }
+
+  .actions { margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: .6rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .94rem; font-weight: 600; line-height: 1;
+    padding: .72rem 1rem; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    transition: border-color .15s, color .15s, background-color .15s, transform .1s ease-out;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:active { transform: scale(.97); }
+  .btn svg { width: 1rem; height: 1rem; flex: none; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: color-mix(in srgb, var(--accent) 88%, #000); color: #fff; }
+  @media (prefers-color-scheme: dark) {
+    .btn.primary { color: #0b1420; }
+    .btn.primary:hover { background: color-mix(in srgb, var(--accent) 88%, #fff); color: #0b1420; }
+  }
+
+  /* Evidence strip */
+  .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+  .facts a { display: block; height: 100%; padding: 1.5rem 1.5rem 1.6rem 0; transition: background-color .15s; }
+  .facts li + li a { padding-left: 1.5rem; border-left: 1px solid var(--line); }
+  .facts .num {
+    display: block; font-size: clamp(1.55rem, 3vw, 1.95rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
+    font-variant-numeric: tabular-nums; color: var(--accent); white-space: nowrap;
+  }
+  .facts .cap { display: block; margin-top: .55rem; color: var(--fg-2); font-size: .93rem; line-height: 1.5; text-wrap: pretty; }
+  .facts .src { display: inline-block; margin-top: .7rem; font-family: var(--mono); font-size: .74rem; letter-spacing: .03em; color: var(--muted); transition: color .15s; }
+  .facts a:hover .src { color: var(--accent); }
+  @media (max-width: 760px) {
+    .facts { grid-template-columns: minmax(0, 1fr); }
+    .facts a, .facts li + li a { padding: 1.2rem 0; border-left: 0; }
+    .facts li + li { border-top: 1px solid var(--line); }
+  }
 
   /* Sections */
-  section { padding-top: 3.2rem; }
-  .eyebrow {
-    font-family: var(--mono); font-size: .74rem; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent); display: flex; align-items: center; gap: .7rem; margin-bottom: 1.3rem;
+  .block { padding-block: clamp(2.75rem, 6vw, 4rem); border-top: 1px solid var(--line); }
+  .block > h2 {
+    align-self: start; position: sticky; top: 5.25rem;
+    font-family: var(--mono); font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); padding-top: .3rem;
   }
-  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  @media (max-width: 760px) { .block > h2 { position: static; margin-bottom: 1.5rem; padding-top: 0; } }
 
-  .intro { font-size: 1.06rem; max-width: 42rem; }
-  .intro strong { font-weight: 650; }
+  .entry { padding-block: 1.75rem; border-top: 1px solid var(--line); }
+  .entry:first-child { padding-top: 0; border-top: 0; }
+  .entry:last-child { padding-bottom: 0; }
+  .entry h3 { font-size: 1.22rem; font-weight: 700; letter-spacing: -.018em; line-height: 1.3; text-wrap: balance; }
+  .entry h3 .what { font-weight: 500; color: var(--fg-2); }
+  .meta { margin-top: .5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .5rem; font-family: var(--mono); font-size: .74rem; color: var(--muted); }
+  .meta .pill { padding: .16rem .5rem; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+  .meta .pill.lead { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: var(--tint); }
+  .entry p { margin-top: .8rem; max-width: 43rem; color: var(--fg-2); text-wrap: pretty; }
+  .entry p strong, .entry li strong { color: var(--fg); font-weight: 650; }
+  .tags { margin-top: .95rem; display: flex; flex-wrap: wrap; gap: .3rem .9rem; font-family: var(--mono); font-size: .76rem; color: var(--muted); }
+  .links { margin-top: .95rem; display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; font-size: .93rem; font-weight: 550; }
+  .links a::after { content: "\2197"; display: inline-block; margin-left: .2em; font-size: .85em; text-decoration: none; }
 
-  /* Cards */
-  .cards { display: grid; gap: 1rem; }
-  .card {
-    position: relative; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 1.35rem 1.5rem; box-shadow: var(--shadow);
-    transition: transform .18s ease, border-color .18s ease;
+  /* Compact lists: skills, publications, background */
+  .kv > div { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1rem; padding-block: .8rem; border-top: 1px solid var(--line); }
+  .kv > div:first-child { padding-top: 0; border-top: 0; }
+  .kv > div:last-child { padding-bottom: 0; }
+  .kv dt { font-weight: 650; }
+  .kv dd { color: var(--fg-2); max-width: 36rem; }
+  @media (max-width: 560px) { .kv > div { grid-template-columns: minmax(0, 1fr); gap: .15rem; } }
+
+  .sub-h { font-size: .98rem; font-weight: 650; margin: 2rem 0 .2rem; }
+  .sub-h:first-child { margin-top: 0; }
+  .pubs li { padding-block: .8rem; border-top: 1px solid var(--line); max-width: 43rem; color: var(--fg-2); }
+  .pubs li:first-child { border-top: 0; }
+  .pubs li strong { color: var(--fg); font-weight: 650; }
+  .pubs .note { display: block; margin-top: .15rem; color: var(--muted); font-size: .92rem; }
+  .pubs em { font-style: italic; }
+
+  .contact { font-size: clamp(1.15rem, 2.2vw, 1.3rem); line-height: 1.5; letter-spacing: -.012em; max-width: 38rem; text-wrap: pretty; }
+  .contact + .actions { margin-top: 1.5rem; }
+
+  footer { border-top: 1px solid var(--line); padding-block: 1.6rem 3rem; color: var(--muted); font-size: .86rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; justify-content: space-between; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .dot { animation: none; }
+    * { transition: none !important; }
   }
-  .card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
-  .card::before {
-    content: ""; position: absolute; left: 0; top: 1.35rem; bottom: 1.35rem; width: 3px;
-    border-radius: 3px; background: linear-gradient(var(--accent), var(--accent-2)); opacity: 0; transition: opacity .18s;
+  @media (prefers-contrast: more) {
+    :root { --line: color-mix(in srgb, var(--fg) 45%, transparent); --muted: var(--fg-2); }
   }
-  .card:hover::before { opacity: 1; }
-  .card h3 { font-size: 1.12rem; letter-spacing: -.01em; }
-  .card .meta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .4rem; color: var(--muted); font-size: .85rem; }
-  .pill { font-family: var(--mono); font-size: .68rem; padding: .12rem .5rem; border-radius: 999px;
-    background: var(--tag-bg); color: var(--muted); }
-  .pill.lead { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
-  .card p { margin-top: .7rem; font-size: .96rem; }
-  .card strong { font-weight: 650; }
-  .tags { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .4rem; }
-  .tags span { font-family: var(--mono); font-size: .72rem; color: var(--muted);
-    background: var(--tag-bg); border-radius: 6px; padding: .18rem .55rem; }
-
-  /* Publications */
-  .pub { padding: .9rem 0; border-bottom: 1px solid var(--border); font-size: .95rem; }
-  .pub:last-child { border-bottom: 0; }
-  .pub .venue { color: var(--muted); font-style: italic; }
-  .pub .badge { font-family: var(--mono); font-size: .68rem; color: var(--accent-2); }
-
-  footer { margin-top: 4rem; padding-top: 1.6rem; border-top: 1px solid var(--border);
-    color: var(--muted); font-size: .85rem; display: flex; flex-wrap: wrap; gap: .5rem 1rem; justify-content: space-between; }
-  footer a:hover { color: var(--accent); }
-
-  /* reveal on scroll */
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
-  .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+  @media print {
+    :root { --bg: #fff; --fg: #000; --fg-2: #222; --muted: #444; --line: #ccc; --accent: #1a4a7d; }
+    .topbar, .actions, .skip { display: none; }
+    .block > h2 { position: static; }
+    .hero { padding-block: 0 1.5rem; }
+    .block { padding-block: 1.5rem; }
+    .entry, .pubs li, .facts li { break-inside: avoid; }
+    .dot { display: none; }
+  }
 </style>
 </head>
-<body>
+<body id="top">
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <span class="brand">Shengzhou Qiang</span>
-    <nav class="topnav">
-      <a href="#research">research</a>
-      <a href="#publications">publications</a>
-      <a href="#education">education</a>
-      <a href="#contact">contact</a>
-      <a href="cv.pdf">cv</a>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">Shengzhou Qiang</a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#research">Research</a>
+      <a href="#open-source">Open source</a>
+      <a href="#skills">Skills</a>
+      <a href="#publications">Publications</a>
+      <a href="#background">Background</a>
+      <a href="#contact">Contact</a>
+      <a class="cta" href="resume.pdf">Résumé</a>
     </nav>
   </div>
-</div>
+</header>
 
-<main>
-  <header class="hero">
-    <svg class="mark" viewBox="0 0 118 66" width="104" height="58" role="img" aria-label="SQ logo">
-      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#215d9c"/><stop offset="1" stop-color="#2b8a7a"/>
-      </linearGradient></defs>
-      <path d="M 38,11 A 11,11 0 1 0 38,33 A 11,11 0 1 1 38,55" fill="none" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
-      <circle cx="76" cy="33" r="20" fill="none" stroke="url(#lg)" stroke-width="9"/>
-      <line x1="86" y1="45" x2="96" y2="55" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
-      <circle cx="102" cy="60" r="5.5" fill="#2b8a7a"/>
-    </svg>
-    <h1>Shengzhou Qiang</h1>
-    <p class="role">CS PhD student · University at Buffalo · distributed transactions &amp; databases</p>
-    <p class="pitch">
-      I build and rigorously evaluate the systems behind <strong>strong consistency</strong> —
-      distributed transactions, consistency protocols, and the datastores that run them.
-      I like turning protocol theory into working systems: my code spans
-      CockroachDB internals, TAPIR, Jepsen, and several self-built large-scale testbeds.
-    </p>
-    <div class="avail"><span class="dot"></span> Seeking Summer 2027 SWE / research internships</div>
-    <nav class="links">
-      <a href="mailto:sqiang@buffalo.edu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-        Email</a>
-      <a href="https://github.com/Alephant6">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.57.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
-        GitHub</a>
-      <a href="https://www.linkedin.com/in/sqiang/">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14ZM8.34 18V10.3H5.8V18h2.54ZM7.07 9.15a1.47 1.47 0 1 0 0-2.94 1.47 1.47 0 0 0 0 2.94ZM18.2 18v-4.22c0-2.26-1.2-3.31-2.82-3.31-1.3 0-1.88.71-2.2 1.21V10.3h-2.54V18h2.54v-4.3c0-.23.02-.46.08-.62.18-.45.59-.92 1.28-.92.9 0 1.26.69 1.26 1.7V18h2.4Z"/></svg>
-        LinkedIn</a>
-      <a href="cv.pdf">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
-        CV</a>
-    </nav>
-  </header>
+<main id="main">
 
-  <section id="research" class="reveal">
-    <div class="eyebrow">01 — Research</div>
-    <div class="cards">
-
-      <article class="card">
-        <h3>SONIC — rethinking replication-critical read-only transactions</h3>
-        <div class="meta"><span class="pill lead">lead author</span><span class="pill">under submission</span><span>2025 – present</span></div>
-        <p>
-          Shows that "replication-critical" read-only transaction designs are unnecessary:
-          formalizes the <strong>SONIC and Remote-Read theorems</strong> and demonstrates them with two systems —
-          <strong>Starry</strong> (a deep modification of UW's TAPIR, 300+ commits of C++) and an
-          extended COPS-SNOW with chain replication — validated by self-built Jepsen falsifier suites.
-          Latest SOSP submission advanced through two review rounds to PC-meeting discussion.
+  <div class="wrap">
+    <section class="hero rail" aria-labelledby="name">
+      <div>
+        <svg class="mark" viewBox="22 6 86 60" role="img" aria-label="SQ monogram">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop class="m1" offset="0" stop-color="#215d9c"/><stop class="m2" offset="1" stop-color="#2b8a7a"/>
+          </linearGradient></defs>
+          <path d="M 38,11 A 11,11 0 1 0 38,33 A 11,11 0 1 1 38,55" fill="none" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="76" cy="33" r="20" fill="none" stroke="url(#lg)" stroke-width="9"/>
+          <line x1="86" y1="45" x2="96" y2="55" stroke="url(#lg)" stroke-width="9" stroke-linecap="round"/>
+          <circle class="m3" cx="102" cy="60" r="5.5" fill="#2b8a7a"/>
+        </svg>
+      </div>
+      <div>
+        <h1 id="name">Shengzhou Qiang</h1>
+        <p class="role">Ph.D. candidate in Computer Science · University at Buffalo</p>
+        <p class="lede">
+          I work on transactional distributed databases: concurrency control, consistency protocols,
+          and the fault-injection testing that shows whether a system keeps its guarantees.
         </p>
-        <div class="tags"><span>C++</span><span>TAPIR</span><span>Jepsen / Clojure</span><span>CloudLab</span><span>consistency</span></div>
-      </article>
-
-      <article class="card">
-        <h3>Juicer — cutting tail latency of strict serializability, without code changes</h3>
-        <div class="meta"><span class="pill">under submission</span><span>2025 – present</span></div>
-        <p>
-          A transparent, proactive message-ordering layer inside gRPC interceptors that reorders
-          transaction messages by timestamp before they reach data shards — cutting
-          <strong>P99 latency by up to 75%</strong> and abort rates by up to 85% for strictly
-          serializable concurrency control, with <strong>zero changes to database code</strong>.
+        <p class="support">
+          Most of my work ends in a measurement or a failing test. I have re-measured published results,
+          reproduced a deadlock across thousands of randomized fault schedules, and landed fixes in an
+          open-source Rust codebase.
         </p>
-        <div class="tags"><span>Go</span><span>gRPC</span><span>2PL / OCC / MVTO / NCC</span><span>tail latency</span></div>
-      </article>
 
-      <article class="card">
-        <h3>EaaS — Evaluation-as-a-Service for distributed storage systems</h3>
-        <div class="meta"><span class="pill">top contributor · ~47% of 1.8K commits</span><span>2023 – 2025</span></div>
-        <p>
-          An end-to-end framework that makes evaluating distributed storage systems easy, correct,
-          and reproducible. I built its unified workload engine (YCSB, transactional YCSB-T,
-          interactive TPC-C) and multi-language adapters for CockroachDB, Cassandra, and
-          EPaxos-family protocols; our re-evaluation <strong>refuted EPaxos's published 3× throughput claim</strong>.
+        <dl class="now">
+          <div>
+            <dt><span class="dot" aria-hidden="true"></span>Looking for</dt>
+            <dd><strong>Summer 2027 internship</strong>, software engineering or research
+              <span class="sub">Database and storage engines · distributed infrastructure · correctness and reliability · inference serving</span></dd>
+          </div>
+          <div>
+            <dt>Graduating</dt>
+            <dd>June 2028 (expected) · advanced to candidacy in 2026</dd>
+          </div>
+        </dl>
+
+        <nav class="actions" aria-label="Contact and profiles">
+          <a class="btn primary" href="resume.pdf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6M9 17h4"/></svg>
+            Résumé (PDF)</a>
+          <a class="btn" href="mailto:sqiang@buffalo.edu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            sqiang@buffalo.edu</a>
+          <a class="btn" href="https://github.com/Alephant6" rel="me">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.57.67.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
+            GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/sqiang/" rel="me">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14ZM8.34 18V10.3H5.8V18h2.54ZM7.07 9.15a1.47 1.47 0 1 0 0-2.94 1.47 1.47 0 0 0 0 2.94ZM18.2 18v-4.22c0-2.26-1.2-3.31-2.82-3.31-1.3 0-1.88.71-2.2 1.21V10.3h-2.54V18h2.54v-4.3c0-.23.02-.46.08-.62.18-.45.59-.92 1.28-.92.9 0 1.26.69 1.26 1.7V18h2.4Z"/></svg>
+            LinkedIn</a>
+        </nav>
+      </div>
+    </section>
+
+    <ul class="facts" aria-label="Selected results">
+      <li><a href="#juicer">
+        <span class="num">75%</span>
+        <span class="cap">peak reduction in P99 latency for strictly serializable databases, with zero database-code changes</span>
+        <span class="src">Juicer →</span>
+      </a></li>
+      <li><a href="#fiber">
+        <span class="num">1,030 → 0</span>
+        <span class="cap">deadlocks across 6,000 randomized fault schedules, before and after a root-cause fix I proposed</span>
+        <span class="src">Nervos Fiber →</span>
+      </a></li>
+      <li><a href="#eaas">
+        <span class="num">3× → 1–1.5×</span>
+        <span class="cap">EPaxos's published throughput gain, re-measured across AWS regions</span>
+        <span class="src">EaaS →</span>
+      </a></li>
+    </ul>
+
+    <section id="research" class="block rail" aria-labelledby="h-research">
+      <h2 id="h-research">Research</h2>
+      <div>
+
+        <article class="entry" id="sonic">
+          <h3>SONIC <span class="what">· Read-only transactions without replication-critical designs</span></h3>
+          <div class="meta"><span class="pill lead">first author</span><span class="pill">under review</span><span>2025 – present</span></div>
+          <p>
+            Proves that "replication-critical" read-only transaction designs are unnecessary
+            (the <strong>SONIC and Remote-Read theorems</strong>), then demonstrates it in two systems:
+            <strong>Starry</strong>, built on the University of Washington's TAPIR codebase in C++, and
+            COPS-SNOW extended with chain replication. Both are validated under crashes and partitions
+            with Jepsen falsifier suites I wrote, and I contributed fixes upstream to Jepsen along the way.
+          </p>
+          <ul class="tags"><li>C++</li><li>Clojure / Jepsen</li><li>TAPIR</li><li>chain replication</li><li>CloudLab</li></ul>
+        </article>
+
+        <article class="entry" id="txjbof">
+          <h3>TxJBOF <span class="what">· Concurrency control and write-path offload for DPU + JBOF storage</span></h3>
+          <div class="meta"><span class="pill lead">lead student</span><span class="pill">in progress</span><span>2026 – present</span></div>
+          <p>
+            Storage built from a DPU and a shelf of NVMe SSDs puts every write through the DPU's weak CPU.
+            I reproduced <strong>Scalio (OSDI '25)</strong> end to end on CloudLab with RDMA NICs, SPDK and NVMe-oF,
+            root-causing two artifact issues on the way, and designed a <strong>client-side write path</strong>
+            that takes the DPU CPU off each write: clients write to the SSDs directly over NVMe-oF and
+            coordinate through one-sided RDMA. Evaluated on emulated NVMe so far.
+          </p>
+          <ul class="tags"><li>C++</li><li>RDMA</li><li>SPDK</li><li>NVMe-oF</li><li>DPU</li></ul>
+        </article>
+
+        <article class="entry" id="juicer">
+          <h3>Juicer <span class="what">· Lower tail latency for strict serializability, without touching the database</span></h3>
+          <div class="meta"><span class="pill">co-author</span><span class="pill">in submission</span><span>2025 – present</span></div>
+          <p>
+            A transparent layer in gRPC-Go interceptors that reorders in-flight transaction messages by
+            timestamp before they reach the data shards. It cuts <strong>P99 latency by up to 75%</strong> and
+            aborts by up to 85% for strictly serializable databases with <strong>zero database-code changes</strong>,
+            and beats NCC (SOSP '23) by 54% on tail latency. I implemented the concurrency-control protocols
+            (2PL wound-wait and wait-die, MVTO) in its Go transactional key-value testbed and built the workload generator.
+          </p>
+          <ul class="tags"><li>Go</li><li>gRPC</li><li>2PL / OCC / MVTO</li><li>tail latency</li></ul>
+        </article>
+
+        <article class="entry" id="eaas">
+          <h3>EaaS <span class="what">· Evaluation-as-a-Service for distributed storage systems</span></h3>
+          <div class="meta"><span class="pill">top contributor</span><span>2023 – 2025</span></div>
+          <p>
+            An end-to-end framework for evaluating distributed storage systems correctly and reproducibly.
+            I built its workload engine (YCSB, transactional YCSB-T, interactive TPC-C) and the adapters for
+            CockroachDB, Cassandra and EPaxos-family protocols. Our cross-region AWS measurements
+            <strong>refuted EPaxos's published 3× throughput claim</strong> (<span class="nw">1–1.5×</span> measured) and uncovered an
+            EPaxos livelock at 9 replicas.
+          </p>
+          <ul class="tags"><li>C++</li><li>gRPC</li><li>Raft</li><li>YCSB / TPC-C</li><li>AWS</li></ul>
+        </article>
+
+        <article class="entry" id="prc">
+          <h3>PRC <span class="what">· Developer-intended consistency testing for distributed datastores</span></h3>
+          <div class="meta"><span class="pill">co-author</span><span class="pill">in submission</span><span>2025 – present</span></div>
+          <p>
+            Directed testing that turns community-known correctness pitfalls, such as timestamp inversion,
+            into targeted tests that complement random exploration tools like Jepsen. I evaluated the
+            P formal-modeling framework for it.
+          </p>
+          <ul class="tags"><li>P</li><li>formal modeling</li><li>consistency testing</li></ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="open-source" class="block rail" aria-labelledby="h-oss">
+      <h2 id="h-oss">Open source</h2>
+      <div>
+
+        <article class="entry" id="fiber">
+          <h3>Nervos Fiber <span class="what">· Rust payment-channel network on CKB</span></h3>
+          <div class="meta"><span class="pill lead">2 fixes merged upstream</span><span>2026</span></div>
+          <p>
+            I wrote a <strong>Jepsen suite for Fiber</strong> (process kills, pauses and network partitions, with
+            invariant checks on channel state and balances) and used it to reproduce a channel deadlock.
+            Across 6,000 randomized fault schedules the deadlock occurred <strong>1,030 times before</strong> a
+            root-cause fix I proposed and <strong>0 times after</strong>; the maintainers opted for a protocol
+            redesign instead of merging it. Separately, two of my fixes are merged upstream, one of them for
+            a reconnect bug I found and reported.
+          </p>
+          <div class="links">
+            <a class="text-link" href="https://github.com/Alephant6/fiber-jepsen">fiber-jepsen</a>
+            <a class="text-link" href="https://github.com/nervosnetwork/fiber/issues/1561">Deadlock #1561</a>
+            <a class="text-link" href="https://github.com/nervosnetwork/fiber/pull/1675">PR #1675</a>
+            <a class="text-link" href="https://github.com/nervosnetwork/fiber/pull/1700">PR #1700</a>
+            <a class="text-link" href="https://github.com/nervosnetwork/fiber/issues/1689">Bug report #1689</a>
+          </div>
+          <ul class="tags"><li>Rust</li><li>Clojure / Jepsen</li><li>fault injection</li><li>Docker</li></ul>
+        </article>
+
+        <article class="entry" id="agent-faultlab">
+          <h3>agent-faultlab <span class="what">· Fault-injection lab for AI trading agents</span></h3>
+          <div class="meta"><span class="pill">author</span><span class="pill">MIT</span><span>2026</span></div>
+          <p>
+            A deterministic stand-in for a broker API that a real agent CLI runs against, with historical
+            price replay, injected timeouts with late commits, and a checker that catches orders filled twice.
+            It applies the Jepsen idea to LLM agents: inject the fault, then check the invariant.
+          </p>
+          <div class="links">
+            <a class="text-link" href="https://github.com/Alephant6/agent-faultlab">agent-faultlab</a>
+          </div>
+          <ul class="tags"><li>Python</li><li>fault injection</li><li>idempotency</li><li>LLM agents</li></ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="skills" class="block rail" aria-labelledby="h-skills">
+      <h2 id="h-skills">Skills</h2>
+      <dl class="kv">
+        <div><dt>Languages</dt><dd>C++, Go, Rust, Java, Python, Clojure, Shell</dd></div>
+        <div><dt>Distributed systems</dt><dd>Transactions and concurrency control (2PL, OCC, MVTO); replication and consensus (Paxos, Raft, EPaxos, chain replication, TAPIR); distributed key-value and storage internals (CockroachDB); gRPC</dd></div>
+        <div><dt>Correctness</dt><dd>Jepsen, fault injection, linearizability and serializability checking, P; consistency models</dd></div>
+        <div><dt>Evaluation and infrastructure</dt><dd>YCSB and TPC-C; RDMA verbs, SPDK, NVMe-oF; CloudLab, AWS, Linux</dd></div>
+      </dl>
+    </section>
+
+    <section id="publications" class="block rail" aria-labelledby="h-pubs">
+      <h2 id="h-pubs">Publications</h2>
+      <div>
+        <h3 class="sub-h">Systems manuscripts</h3>
+        <ul class="pubs">
+          <li><strong>SONIC: Rethinking replication-critical read-only transactions.</strong>
+            <span class="note">S. Qiang et al. · first author · under review at a top-tier systems conference, 2026</span></li>
+          <li><strong>Juicer: Transparent request scheduling for low tail latency.</strong>
+            <span class="note">Co-author · in submission, 2026</span></li>
+          <li><strong>PRC: Developer-intended consistency testing for distributed datastores.</strong>
+            <span class="note">Co-author · in submission, 2026</span></li>
+          <li><strong>Enabling easy, correct, and reproducible evaluation of distributed storage systems with Evaluation as a Service.</strong>
+            <span class="note">Co-author · manuscript, 2025</span></li>
+        </ul>
+
+        <h3 class="sub-h">Earlier work in signal processing</h3>
+        <ul class="pubs prose">
+          <li><strong>S.-Z. Qiang</strong> et al. Instantaneous cross-correlation function type of WD based LFM signals
+            analysis via output SNR inequality modeling. <em>EURASIP Journal on Advances in Signal Processing</em>, 2021.
+            <a href="https://doi.org/10.1186/s13634-021-00830-7">doi:10.1186/s13634-021-00830-7</a>
+            <span class="note">First author</span></li>
+          <li>Six further co-authored journal papers, 2021–2022: <em>Optik</em> (three), <em>Physics Letters A</em>,
+            <em>Mathematical Problems in Engineering</em>, and <em>Chinese Journal of Electronics</em>.
+            <span class="note">Full citations are in the <a href="cv.pdf">academic CV (PDF)</a>.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="background" class="block rail" aria-labelledby="h-bg">
+      <h2 id="h-bg">Background</h2>
+      <dl class="kv prose">
+        <div>
+          <dt>2023 – present</dt>
+          <dd><strong>University at Buffalo, SUNY</strong> · Ph.D. in Computer Science, expected June 2028.
+            Graduate research assistant advised by <a href="https://cse.buffalo.edu/~haonanlu/">Prof. Haonan Lu</a>;
+            advanced to candidacy in 2026.</dd>
+        </div>
+        <div>
+          <dt>2023 – 2025</dt>
+          <dd><strong>Teaching assistant, UB Computer Science and Engineering</strong> · graduate courses in
+            Distributed Systems, Operating Systems, and Data-Intensive Computing.</dd>
+        </div>
+        <div>
+          <dt>2019 – 2023</dt>
+          <dd><strong>Nanjing University of Information Science &amp; Technology</strong> · B.S. in Information and
+            Computing Science. GPA 3.8/4.0 (top 5%); <span class="nw">First-class</span> Outstanding Graduate of Jiangsu Province.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="contact" class="block rail" aria-labelledby="h-contact">
+      <h2 id="h-contact">Contact</h2>
+      <div>
+        <p class="contact prose">
+          Email is the fastest way to reach me:
+          <a href="mailto:sqiang@buffalo.edu">sqiang@buffalo.edu</a>.
+          I am glad to talk about internships, distributed systems, databases, or how to break them.
         </p>
-        <div class="tags"><span>C++</span><span>gRPC</span><span>Raft</span><span>TPC-C / YCSB</span><span>AWS</span></div>
-      </article>
+        <nav class="actions" aria-label="Contact links">
+          <a class="btn primary" href="mailto:sqiang@buffalo.edu">Email me</a>
+          <a class="btn" href="resume.pdf">Résumé (PDF)</a>
+          <a class="btn" href="https://www.linkedin.com/in/sqiang/" rel="me">LinkedIn</a>
+          <a class="btn" href="https://github.com/Alephant6" rel="me">GitHub</a>
+        </nav>
+      </div>
+    </section>
+  </div>
 
-      <article class="card">
-        <h3>PRC — developer-intended consistency testing for distributed datastores</h3>
-        <div class="meta"><span class="pill">under submission</span><span>2025 – present</span></div>
-        <p>
-          Directed implementation testing that turns community-known correctness pitfalls
-          (e.g., timestamp inversion) into targeted tests — complementing random-exploration
-          tools like Jepsen.
-        </p>
-        <div class="tags"><span>P framework</span><span>formal methods</span><span>testing</span></div>
-      </article>
-
-    </div>
-  </section>
-
-  <section id="publications" class="reveal">
-    <div class="eyebrow">02 — Publications</div>
-    <div class="pub">
-      <span class="badge">FIRST AUTHOR</span><br>
-      <strong>S.-Z. Qiang</strong>, et al. "Instantaneous cross-correlation function type of WD based LFM signals analysis via output SNR inequality modeling."
-      <span class="venue">EURASIP Journal on Advances in Signal Processing, 2021.</span>
-    </div>
-    <div class="pub">
-      Six further co-authored papers in signal processing
-      <span class="venue">(Optik ×3, Physics Letters A, Mathematical Problems in Engineering, Chinese Journal of Electronics)</span>, 2021–2022.
-    </div>
-  </section>
-
-  <section id="education" class="reveal">
-    <div class="eyebrow">03 — Education</div>
-    <div class="pub">
-      <strong>University at Buffalo, SUNY</strong> — Ph.D. in Computer Science
-      <span class="venue">· 2023 – present (expected 2028)</span><br>
-      Distributed transactions, consistency protocols, and evaluation of distributed datastores.
-      Advisor: <a href="https://cse.buffalo.edu/~haonanlu/" style="color:var(--accent)">Prof. Haonan Lu</a>.
-    </div>
-    <div class="pub">
-      <strong>Nanjing University of Information Science &amp; Technology</strong> — B.S. in Information and Computing Science
-      <span class="venue">· 2019 – 2023</span><br>
-      GPA 3.8/5.0 (top 5%) · <strong>First-class Outstanding Graduate of Jiangsu Province</strong> ·
-      industry-embedded program with Neusoft Group.
-    </div>
-  </section>
-
-  <section id="contact" class="reveal">
-    <div class="eyebrow">04 — Contact</div>
-    <p class="intro">
-      Always happy to talk distributed systems, databases, or LLM infrastructure.
-      Reach me at <a href="mailto:sqiang@buffalo.edu" style="color:var(--accent);font-weight:600">sqiang@buffalo.edu</a>
-      or connect on <a href="https://www.linkedin.com/in/sqiang/" style="color:var(--accent);font-weight:600">LinkedIn</a>.
-    </p>
-  </section>
-
-  <footer>
-    <span>© 2026 Shengzhou Qiang</span>
-    <span>Built with plain HTML · no trackers, no cookies</span>
-  </footer>
 </main>
 
+<footer>
+  <div class="wrap">
+    <span>© 2026 Shengzhou Qiang · Buffalo, NY · Updated November 2026</span>
+    <span>Plain HTML and CSS. No trackers, no cookies.</span>
+  </div>
+</footer>
+
 <script>
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // Highlight the current section in the top nav. The page works fully without this.
+  (() => {
+    if (!('IntersectionObserver' in window)) return;
+    const links = new Map([...document.querySelectorAll('.topnav a[href^="#"]')].map(a => [a.hash.slice(1), a]));
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach(a => a.removeAttribute('aria-current'));
+        links.get(e.target.id)?.setAttribute('aria-current', 'true');
+      }
+    }, { rootMargin: '-30% 0px -65% 0px' });
+    links.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+  })();
 </script>
 </body>
 </html>
